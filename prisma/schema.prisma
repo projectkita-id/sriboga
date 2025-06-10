@@ -1,0 +1,19 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model Intake {
+  log_time    DateTime @default(now()) @map("LOGTIME")
+  scale Int @map("SCALE")
+  source String? @db.VarChar(20) @map("SOURCE")
+  dest String? @db.VarChar(20) @map("DEST")
+  product String? @db.VarChar(20) @map("PRODUCT")
+
+  @@map("INTAKE411")
+  @@id([log_time])
+}
