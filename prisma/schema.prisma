@@ -8,12 +8,12 @@ datasource db {
 }
 
 model Intake {
-  log_time    DateTime @default(now()) @map("LOGTIME")
-  scale Int @map("SCALE")
-  source String? @db.VarChar(20) @map("SOURCE")
-  dest String? @db.VarChar(20) @map("DEST")
-  product String? @db.VarChar(20) @map("PRODUCT")
+  id        Int      @id @default(autoincrement()) @map("ID") // kolom ID sebagai primary key
+  log_time  DateTime @default(now())                @map("LOGTIME")
+  scale     Int                                      @map("SCALE")
+  source    String?                                  @db.VarChar(20) @map("SOURCE")
+  dest      String?                                  @db.VarChar(20) @map("DEST")
+  product   String?                                  @db.VarChar(20) @map("PRODUCT")
 
   @@map("INTAKE411")
-  @@id([log_time])
 }

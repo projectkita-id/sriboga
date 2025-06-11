@@ -14,22 +14,34 @@ interface CreateIntakeDto {
 }
 
 app.post(`/intakes`, async (req, res) => {
-  const { scale, dest, product, source }: CreateIntakeDto = req.body;
+  try {
+    const { scale, dest, product, source }: CreateIntakeDto = req.body;
 
-  const intakeData: Prisma.IntakeCreateInput = {
-    log_time: new Date(),
-    scale,
-    dest,
-    product,
-    source,
-  };
+    const now = new Date();
 
-  await prisma.intake.create({
-    data: intakeData,
-  });
-  res.status(201).json({
-    message: "Intake created successfully",
-  });
+    now.setMilliseconds(now.getMilliseconds() + Math.floor(Math.random() * 10));
+
+    const intakeData: Prisma.IntakeCreateInput = {
+      log_time: now,
+      scale,
+      dest,
+      product,
+      source,
+    };
+
+    await prisma.intake.create({
+      data: intakeData,
+    });
+    res.status(201).json({
+      message: "Intake created successfully",
+    });
+  } catch (error) {
+    console.error("Error creating intake:", error);
+    res.status(500).json({
+      message: "Internal server error",
+      error: error instanceof Error ? error.message : "Unknown error",
+    });
+  }
 });
 
 const server = app.listen(3000, () =>
